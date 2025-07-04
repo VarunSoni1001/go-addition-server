@@ -44,28 +44,27 @@ func main() {
 	})
 
 	http.HandleFunc("/add-form-with-parse", func(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	var input struct {
-		A float64 `json:"a"`
-		B float64 `json:"b"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
+		if r.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		var input struct {
+			A float64 `json:"a"`
+			B float64 `json:"b"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+			http.Error(w, "Invalid JSON", http.StatusBadRequest)
+			return
+		}
 
-	result := input.A + input.B
-	response := map[string]interface{}{
-		"result": result,
-	}
+		result := input.A + input.B
+		response := map[string]interface{}{
+			"result": result,
+		}
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
-})
-
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+	})
 
 	http.HandleFunc(("/add"), func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
